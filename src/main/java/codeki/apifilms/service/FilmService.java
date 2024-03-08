@@ -11,61 +11,49 @@ import java.util.Optional;
 @Service
 public class FilmService {
 
+    // Inyección de dependencia del repositorio
     @Autowired
     private IFilmRepository filmRepository;
 
+    // Obtiene todas las películas
     public List<Film> getAllFilms() {
         return filmRepository.findAll();
     }
 
+    // Busca una película por ID
+    // En caso de que no sea encontrada devuelve un null
     public Film findFilmById(Long id) {
-        Optional<Film> film = filmRepository.findById(id);
-        return film.orElseGet(null); // esto ver
+        return filmRepository.findById(id).orElse(null);
     }
 
+    // Busca películas por título
+    // En caso de no encontrarse resultados devuelve una lista vacía
     public List<Film> findFilmByTitle(String title) {
-        List<Film> filmList = filmRepository.findByTitleContainingIgnoreCase(title);
-        if(!filmList.isEmpty()) {
-            return filmList;
-        } else {
-            return null; // esto ver
-        }
+        return filmRepository.findByTitleContainingIgnoreCase(title);
     }
 
-    public String createFilm(Film film) {
+    // Crea una película nueva y la retorna
+    public Film createFilm(Film film) {
         filmRepository.save(film);
-        return "La película se creó con éxito";
+        return film;
     }
 
-    public String updateFilm(Long id, Film film) {
+    // Actualiza una película según su ID y la retorna
+    // En caso de que no sea encontrada devuelve un null
+    public Film updateFilm(Long id, Film film) {
         Optional<Film> filmOptional = filmRepository.findById(id);
         if (filmOptional.isPresent()) {
             film.setId(id);
             filmRepository.save(film);
-            return "La película " + id + " se actualizó con éxito";
+            return film;
         } else {
-            return "La película " + id + " no se encontró";
+            return null;
         }
     }
 
-    public String updateFilmPrice(Long id, Double price) {
-        Optional<Film> filmOptional = filmRepository.findById(id);
-        if (filmOptional.isPresent()) {
-            Film filmExist = filmOptional.get();
-            filmExist.setPrice(price);
-            filmRepository.save(filmExist);
-            return "El precio de la película " + id + " se actualizó con éxito";
-        } else {
-            return "La película " + id + " no se encontró";
-        }
-    }
-
-    public String deleteFilmById(Long id) {
-        Optional<Film> filmOptional = filmRepository.findById(id);
-        if(filmOptional.isPresent()) {
-            filmRepository.deleteById(id);
-            return "La película " + id + " se eliminó con éxito";
-        } else
-            return "La película " + id + " no se encontró";
+    // Elimina una película según su ID
+    // En caso de que no sea encontrada no se realiza la eliminación
+    public void deleteFilmById(Long id) {
+        filmRepository.deleteById(id);
     }
 }

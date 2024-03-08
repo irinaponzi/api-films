@@ -11,41 +11,43 @@ import java.util.List;
 @RequestMapping("/films")
 public class FilmController {
 
+    // Inyección de dependencia del servicio
     @Autowired
     private FilmService filmService;
 
+    // Obtener todas las películas
     @GetMapping("")
     public List<Film> getAllFilms() {
         return filmService.getAllFilms();
     }
 
+    // Buscar película por ID
     @GetMapping("/search/{id}")
     public Film findFilmById(@PathVariable Long id) {
         return filmService.findFilmById(id);
     }
 
+    // Buscar película por título
     @GetMapping("/search-by-title/{title}")
     public List<Film> findFilmByTitle(@PathVariable String title) {
         return filmService.findFilmByTitle(title);
     }
 
+    // Crear película
     @PostMapping("/create")
-    public String createFilm(@RequestBody Film film) {
+    public Film createFilm(@RequestBody Film film) {
         return filmService.createFilm(film);
     }
 
+    // Actualizar película
     @PutMapping("/update/{id}")
-    public String updateFilm(@PathVariable Long id, @RequestBody Film film) {
+    public Film updateFilm(@PathVariable Long id, @RequestBody Film film) {
         return filmService.updateFilm(id, film);
     }
 
-    @PatchMapping("/update-price/{id}")
-    public String updateFilmPrice(@PathVariable Long id, @RequestParam Double price) {
-        return filmService.updateFilmPrice(id, price);
-    }
-
+    // Eliminar película
     @DeleteMapping("/delete/{id}")
-    public String deleteFilmById(@PathVariable Long id) {
-        return filmService.deleteFilmById(id);
+    public void deleteFilmById(@PathVariable Long id) {
+        filmService.deleteFilmById(id);
     }
 }

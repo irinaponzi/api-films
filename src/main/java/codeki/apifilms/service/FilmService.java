@@ -38,18 +38,25 @@ public class FilmService {
         return film;
     }
 
-    // Actualiza una película según su ID y la retorna
-    // En caso de que no sea encontrada devuelve un null
+    // Actualiza una película y la retorna. Recibe un film con todos sus atributos, incluído su ID.
+    // En caso de que la película no sea encontrada, la crea.
+    public Film updateFilm(Film film) {
+        filmRepository.save(film);
+        return film;
+    }
+
+    /*  Método para el update, buscando antes el film por ID
+
     public Film updateFilm(Long id, Film film) {
         Optional<Film> filmOptional = filmRepository.findById(id);
         if (filmOptional.isPresent()) {
             film.setId(id);
             filmRepository.save(film);
             return film;
-        } else {
-            return null;
         }
+        throw new NoSuchElementException("La película no fue encontrada");
     }
+    */
 
     // Elimina una película según su ID
     // En caso de que no sea encontrada no se realiza la eliminación

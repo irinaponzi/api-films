@@ -40,9 +40,9 @@ public class FilmController {
     }
 
     // Actualizar película
-    @PutMapping("/update/{id}")
-    public Film updateFilm(@PathVariable Long id, @RequestBody Film film) {
-        return filmService.updateFilm(id, film);
+    @PutMapping("/update")
+    public Film updateFilm(@RequestBody Film film) {
+        return filmService.updateFilm(film);
     }
 
     // Eliminar película
